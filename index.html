@@ -11,21 +11,47 @@
     <!-- Include bootstrap  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
 
     <title>Weather Dashboard</title>
 </head>
 
 <body>
+    <div id="fluid-container" class="container-fluid">
+        <div id="dashboard-title" class="col-md-12 text-center">
+            <h1>Weather Dashboard</h1>
 
-    <script type="text/javascript" src="moment.js"></script>
-    <!-- This form will be where users input data about the movies -->
-    <form id="city-form">
-        <label for="city-input">Search for city's weather</label>
-        <input type="text" id="city-input"><br>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <script type="text/javascript" src="moment.js"></script>
+                <!-- This form will be where users input data about the movies -->
+                <form id="city-form">
+                    <label for="city-input">Search for City:</label>
+                    <input type="text" id="city-input">
 
-        <!-- This button will trigger our AJAX call -->
-        <input id="find-city" type="submit" value="Weather Search">
-    </form>
+                    <!-- This button will trigger our AJAX call -->
+                    <button id="find-city"><i class="fa fa-search"></i> </button>
+                    <!-- <input id="find-city" type="submit" value="Weather Search"> -->
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="city"></div>
+                <!-- <div class="date"></div> -->
+                <!-- <div class="weather-cond">weather-cond</div> -->
+                <div class="temp"></div>
+                <div class="humidity"></div>
+                <div class="wind"></div>
+                <div class="uvi">uvi</div>
+            </div>
+        </div>
+
+    </div>
+
+
     <!-- Display the following under current weather conditions:
         City
         Date             <div id="current-date" class="row current-date"></div>
@@ -36,13 +62,19 @@
         UV index -->
 
     <!-- Retrieved data will be dumped here -->
-    <div class="city">city</div>
-    <div class="date">date</div>
-    <div class="weather-cond">weather-cond</div>
-    <div class="temp">temp</div>
-    <div class="humidity">humidity</div>
-    <div class="wind">wind</div>
-    <div class="uvi">uvi</div>
+
+
+    <div id="prior-search-area" class="col-md-2">
+        <div id="prior-search-text" class="text-center">
+            <h3>Prior Searches</h3>
+        </div>
+        <div id="prior-searches">
+
+            <ul id="prior-search-list" style="list-style-type:none;"></ul>
+
+
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -1,6 +1,17 @@
-var currentDate = moment().format('MMMM DD, YYYY');
+var currentDate = moment().format('MM/DD/YYYY');
 var currentDateArea = $(document).find(".date");
 var currentDateString = moment().format('MMDDYYYY');
+var cities = [];
+var cityList = document.querySelector("#prior-search-list");
+
+// Get stored highscores from localStorage
+// Parsing the JSON string to an object
+var storedCities = JSON.parse(localStorage.getItem("cities"));
+
+// If highscores were retrieved from localStorage, update the highscores array to it
+if (storedCities !== null) {
+    cities = storedCities;
+}
 
 $("#find-city").on("click", function (event) {
 
@@ -12,11 +23,29 @@ $("#find-city").on("click", function (event) {
 
     // Here we grab the text from the input box
     var city = $("#city-input").val();
+
+    saveCity(city);
     console.log(city)
     citySearch(city);
 
 })
 
+$("#prior-search-list").on("click", function () {
+    //If the scores are not currently visible, show them.
+    debugger;
+    var txtClicked = $("#prior-search-list").attr("data-index");
+    debugger;
+    console.log($("#prior-search-list").attr("data-index"))
+    // if (viewHighScores === false) {
+    //     highScoreArea.removeAttribute("hidden");
+    //     viewHighScores = true;
+    //     //If the scores are currently visible, hide them.
+    // } else if (viewHighScores === true) {
+    //     highScoreArea.setAttribute("hidden", "false");
+    //     viewHighScores = false;
+    // }
+
+});
 
 function citySearch(city) {
     // This is our API key
@@ -73,21 +102,21 @@ function citySearch(city) {
             // <div class="uvi">uvi</div>
 
             // Transfer content to HTML
-            $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-            $(".date").text("Date: " + currentDate);
-            $(".weather-cond").html("Weather Conditions: " + txtWeatherCond + " " + iconWeather);
+            $(".city").html("<h4>" + response.name + " (" + currentDate + ")" + iconWeather + "</h4>");
+            // $(".date").text("Date: " + currentDate);
+            // $(".weather-cond").html("Weather Conditions: " + txtWeatherCond + " " + iconWeather);
             $(".wind").text("Wind Speed: " + response.wind.speed);
             $(".humidity").text("Humidity: " + response.main.humidity);
-            $(".temp").text("Temperature (F) " + response.main.temp);
+            $(".temp").text("Temperature:" + response.main.temp);
 
             // Converts the temp to Kelvin with the below formula
             var tempF = (response.main.temp - 273.15) * 1.80 + 32;
-            $(".tempF").text("Temperature (Kelvin) " + tempF);
+            $(".tempF").text("Temperature: " + tempF);
 
             // Log the data in the console as well
             console.log("Wind Speed: " + response.wind.speed);
             console.log("Humidity: " + response.main.humidity);
-            console.log("Temperature (F): " + response.main.temp);
+            console.log("Temperature: " + response.main.temp);
 
             var lon = response.coord.lon
             var lat = response.coord.lat
@@ -113,5 +142,50 @@ function citySearch(city) {
                 });
 
         });
+
+};
+
+
+function saveCity(city) {
+
+    event.preventDefault()
+
+
+
+
+    var cityText = {
+        city: city
+    };
+    console.log("city text:", cityText)
+
+    // Return from function early if submitted initials is blank
+    if (cityText === "") {
+        return;
+    }
+    // localStorage.setItem('city', cityText);
+    cities.push(cityText);
+
+    // Render a new li for each high score stored locally
+    for (var i = 0; i < cities.length; i++) {
+
+
+        console.log("cities array:", cities[i].city)
+
+        var c = cities[i].city;
+
+        var li = document.createElement("li");
+        li.textContent = c;
+        li.setAttribute("data-index", i);
+
+        cityList.appendChild(li);
+
+    };
+    // // Add new highscore to initials array, clear the input
+    // highscore.push(initialsText);
+    // initialsInput.value = "";
+    // highscore.hidden = "";
+    // // Store updated initials in localStorage, re-render the list
+    // storeHighScore();
+    // renderHighScore();
 
 };

@@ -1,0 +1,19 @@
+/* Set how much of the viewable space is taken up */
+html,
+body {
+  height: 100vh;
+  width: 100%;
+  padding: 0px 0px 0px 0px;
+}
+body
+
+.container-fluid{
+
+    padding: 0px 0px 0px 0px;
+
+}
+
+#dashboard-title{
+    background-color: black;
+    color: white;
+}
