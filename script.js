@@ -2,7 +2,7 @@ var currentDate = moment().format('MM/DD/YYYY');
 var currentDateArea = $(document).find(".date");
 var currentDateString = moment().format('MMDDYYYY');
 var cities = [];
-var cityList = document.querySelector("#prior-search-list");
+var cityList = $("#prior-search-list");
 
 // Get stored highscores from localStorage
 // Parsing the JSON string to an object
@@ -30,12 +30,15 @@ $("#find-city").on("click", function (event) {
 
 })
 
-$("#prior-search-list").on("click", function () {
+$("#prior-search-list").on("click", '.li_item', function () {
     //If the scores are not currently visible, show them.
-    debugger;
-    var txtClicked = $("#prior-search-list").attr("data-index");
-    debugger;
-    console.log($("#prior-search-list").attr("data-index"))
+    // debugger;
+    // alert("Got here!")
+    var city = $(this).attr("data-city");
+
+    citySearch(city);
+    // debugger;
+    console.log(city)
     // if (viewHighScores === false) {
     //     highScoreArea.removeAttribute("hidden");
     //     viewHighScores = true;
@@ -141,7 +144,87 @@ function citySearch(city) {
 
                 });
 
+
+            var cityID = response.id
+
+
+            var queryForecast = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey + "&cnt=5"
+            $.ajax({
+                url: queryForecast,
+                method: "GET"
+            })
+
+                .then(function (response3) {
+
+                    var forecast = response3.list;
+                    var forecast2 = response3
+
+                    // console.log(response3)
+                    // Log the resulting object
+
+                    console.log("FORECAST:", forecast);
+                    console.log("FORECAST2:", forecast2);
+
+                    $(".dayforecast").empty();
+
+                    // $(".uvi").text("UVI:" + response2.value);
+
+                    for (var i = 0; i < 6; i++) {
+
+
+                        // var txtWeatherCond = forecast[i].weather[0].main;
+                        debugger;
+
+                        // var iconLink = " <img src=https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>"
+                        var txtNum = ".forecast-" + i
+                        var forecastArea = $(document).find(txtNum);
+                        // forecastArea.attr("class", "dayforecast")
+                        var div = $("<div>");
+                        var img = $("<img>");
+                        var divtemp = $("<div>");
+                        var divhumidity = $("<div>");
+                        var divspace = $("<div>");
+                        var txtDate = forecast[i].dt_txt;
+
+                        img.attr("src", "https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png")
+                        // console.log("https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>");
+                        // debugger;
+                        //(0K − 273.15) × 9/5 + 32 
+                        divtemp.text("Temp: " + parseInt((forecast[i].main.temp - 273.15) * (9 / 5) + 32) + "F");
+                        debugger;
+                        divhumidity.text("Humidity: " + forecast[i].main.humidity);
+                        // console.log(forecast[i].main.humidity)
+
+                        // debugger;
+                        // console.log(txtWeatherCond)
+                        // var iconWeather = " <img src=https://openweathermap.org/img/wn/" + weather[i].icon + ".png>"
+                        // debugger;
+                        // console.log("forecast weather:", txtWeatherCond, txtDate.substring(0, 10), txtNum);
+
+                        console.log(txtDate.substr(0, 10))
+                        console.log(txtDate.substr(5, 2))
+                        console.log(txtDate.substr(8, 2))
+
+                        console.log(txtDate.substr(0, 4))
+
+                        // $(txtNum).text();
+                        div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(0, 4));
+                        debugger;
+                        forecastArea.append(div, img, divtemp, divhumidity, divspace);
+
+                        debugger;
+
+                        // https://openweathermap.org/img/wn/02n.png
+                        // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
+                    };
+
+                })
+
+                ;
+
         });
+
+    // api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={your api key}
 
 };
 
@@ -156,7 +239,7 @@ function saveCity(city) {
     var cityText = {
         city: city
     };
-    console.log("city text:", cityText)
+    // console.log("city text:", cityText)
 
     // Return from function early if submitted initials is blank
     if (cityText === "") {
@@ -169,15 +252,18 @@ function saveCity(city) {
     for (var i = 0; i < cities.length; i++) {
 
 
-        console.log("cities array:", cities[i].city)
+        // console.log("cities array:", cities[i].city)
 
         var c = cities[i].city;
 
-        var li = document.createElement("li");
-        li.textContent = c;
-        li.setAttribute("data-index", i);
+        // console.log(c)
 
-        cityList.appendChild(li);
+        var li = $("<li>");
+        li.attr('class', 'li_item')
+        li.text(c);
+        li.attr("data-city", c);
+
+        cityList.append(li);
 
     };
     // // Add new highscore to initials array, clear the input

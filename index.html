@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- My style sheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+
     <link rel='icon' href='assets/images/favicon.ico' type='image/x-icon' />
     <!-- Include bootstrap  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -28,24 +29,68 @@
         <div class="row">
             <div class="col-md-4">
                 <script type="text/javascript" src="moment.js"></script>
-                <!-- This form will be where users input data about the movies -->
-                <form id="city-form">
-                    <label for="city-input">Search for City:</label>
-                    <input type="text" id="city-input">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- This form will be where users input data about the movies -->
+                        <form id="city-form">
+                            <label for="city-input">Search for City:</label>
+                            <input type="text" id="city-input">
 
-                    <!-- This button will trigger our AJAX call -->
-                    <button id="find-city"><i class="fa fa-search"></i> </button>
-                    <!-- <input id="find-city" type="submit" value="Weather Search"> -->
-                </form>
+                            <!-- This button will trigger our AJAX call -->
+                            <button id="find-city">Search<i class="fa fa-search"></i> <i
+                                    class="far fa-newspaper"></i></button>
+                            <!-- <input id="find-city" type="submit" value="Weather Search"> -->
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div id="prior-search-area" class="col-md-12">
+                        <div id="prior-search-text" class="text-center">
+                            <h3>Prior Searches</h3>
+                        </div>
+                        <div id="prior-searches">
+
+                            <ul id="prior-search-list" style="list-style-type:none;"></ul>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <div class="col-md-8">
-                <div class="city"></div>
-                <!-- <div class="date"></div> -->
-                <!-- <div class="weather-cond">weather-cond</div> -->
-                <div class="temp"></div>
-                <div class="humidity"></div>
-                <div class="wind"></div>
-                <div class="uvi">uvi</div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="city"></div>
+                        <!-- <div class="date"></div> -->
+                        <!-- <div class="weather-cond">weather-cond</div> -->
+                        <div class="temp"></div>
+                        <div class="humidity"></div>
+                        <div class="wind"></div>
+                        <div class="uvi"></div>
+                    </div>
+
+                </div>
+                <h3>5 Day Forecast</h3><br>
+                <div class="row text-center">
+
+
+                    <div class="col-md-2 forecast-0 dayforecast"></div>
+                    <div class="col-md-2 forecast-1 dayforecast"></div>
+                    <div class="col-md-2 forecast-2 dayforecast"></div>
+                    <div class="col-md-2 forecast-3 dayforecast"></div>
+                    <div class="col-md-2 forecast-4 dayforecast"></div>
+
+
+
+
+
+
+                </div>
+
             </div>
         </div>
 
@@ -64,17 +109,6 @@
     <!-- Retrieved data will be dumped here -->
 
 
-    <div id="prior-search-area" class="col-md-2">
-        <div id="prior-search-text" class="text-center">
-            <h3>Prior Searches</h3>
-        </div>
-        <div id="prior-searches">
-
-            <ul id="prior-search-list" style="list-style-type:none;"></ul>
-
-
-        </div>
-    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

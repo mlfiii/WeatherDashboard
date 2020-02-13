@@ -17,3 +17,12 @@ body
     background-color: black;
     color: white;
 }
+
+.dayforecast{
+
+  background-color: turquoise;
+  margin: 5px;
+  padding: 5px;
+  border: solid 1px black;
+  color: white;
+}
