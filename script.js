@@ -148,7 +148,7 @@ function citySearch(city) {
             var cityID = response.id
 
 
-            var queryForecast = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey + "&cnt=5"
+            var queryForecast = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey + "&cnt=40"
             $.ajax({
                 url: queryForecast,
                 method: "GET"
@@ -168,8 +168,17 @@ function citySearch(city) {
                     $(".dayforecast").empty();
 
                     // $(".uvi").text("UVI:" + response2.value);
+                    "2020-02-14 00:00:00"
+                    var data = forecast;
+                    var res = alasql('SELECT (day + min_time) dt_txt FROM (SELECT day, min(time) min_time FROM (SELECT SUBSTRING(dt_txt,1,10) day,SUBSTRING(dt_txt,11,length(dt_txt)) time  FROM ?) X '
+                        + 'GROUP BY  day) Y ', [data]);
 
-                    for (var i = 0; i < 6; i++) {
+                    var res1 = alasql('SELECT data.* \
+                        FROM ? res JOIN ? data USING dt_txt', [res, data]);
+
+                    // document.getElementById("res").textContent = JSON.stringify(res);
+
+                    for (var i = 0; i < res1.length; i++) {
 
 
                         // var txtWeatherCond = forecast[i].weather[0].main;
@@ -184,15 +193,15 @@ function citySearch(city) {
                         var divtemp = $("<div>");
                         var divhumidity = $("<div>");
                         var divspace = $("<div>");
-                        var txtDate = forecast[i].dt_txt;
+                        var txtDate = res1[i].dt_txt;
 
-                        img.attr("src", "https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png")
+                        img.attr("src", "https://openweathermap.org/img/wn/" + res1[i].weather[0].icon + ".png")
                         // console.log("https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>");
                         // debugger;
                         //(0K − 273.15) × 9/5 + 32 
-                        divtemp.text("Temp: " + parseInt((forecast[i].main.temp - 273.15) * (9 / 5) + 32) + "F");
+                        divtemp.text("Temp: " + parseInt((res1[i].main.temp - 273.15) * (9 / 5) + 32) + "F");
                         debugger;
-                        divhumidity.text("Humidity: " + forecast[i].main.humidity);
+                        divhumidity.text("Humidity: " + res1[i].main.humidity);
                         // console.log(forecast[i].main.humidity)
 
                         // debugger;
@@ -216,17 +225,24 @@ function citySearch(city) {
 
                         // https://openweathermap.org/img/wn/02n.png
                         // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
+
+
+
                     };
 
                 })
 
                 ;
 
-        });
+        })
+
+        .catch((e) => console.log('Exception: ', e));
+
 
     // api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={your api key}
 
 };
+
 
 
 function saveCity(city) {
@@ -275,3 +291,5 @@ function saveCity(city) {
     // renderHighScore();
 
 };
+
+
