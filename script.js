@@ -166,6 +166,11 @@ function citySearch(city) {
 
         .catch((e) => {
 
+            // Return from function early if submitted initials is blank
+            if (cityText === "") {
+                return;
+            }
+
 
             alert(`The unknown error has occurred: ${e.responseText}`);
             return;
@@ -182,7 +187,6 @@ function citySearch(city) {
 //Saves the city text to the
 function saveCity(city) {
 
-    debugger;
     event.preventDefault();
 
     var cityText = {
