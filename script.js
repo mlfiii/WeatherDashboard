@@ -15,17 +15,16 @@ if (storedCities !== null) {
 
 $("#find-city").on("click", function (event) {
 
-    // event.preventDefault() can be used to prevent an event's default behavior.
     // Here, it prevents the submit button from trying to submit a form when clicked
     event.preventDefault();
-    // console.log("clicked-city");
-    // alert("find city");
 
     // Here we grab the text from the input box
     var city = $("#city-input").val();
 
+    //Save the city text to list 
     saveCity(city);
-    // console.log(city)
+
+    //Start the search
     citySearch(city);
 
 
@@ -33,25 +32,18 @@ $("#find-city").on("click", function (event) {
 
 $("#prior-search-list").on("click", '.li_item', function () {
     //If the scores are not currently visible, show them.
-    // debugger;
-    // alert("Got here!")
+
     var city = $(this).attr("data-city");
 
+    //When the text is clicked, initiate the city search
     citySearch(city);
-    // debugger;
-    // console.log(city)
-    // if (viewHighScores === false) {
-    //     highScoreArea.removeAttribute("hidden");
-    //     viewHighScores = true;
-    //     //If the scores are currently visible, hide them.
-    // } else if (viewHighScores === true) {
-    //     highScoreArea.setAttribute("hidden", "false");
-    //     viewHighScores = false;
-    // }
+
 
 });
 
+//Used to search for a city
 function citySearch(city) {
+
     // This is our API key
     var APIKey = "4cc21abac77ff1659707203c7c342f15";
 
@@ -68,21 +60,6 @@ function citySearch(city) {
         // We store all of the retrieved data inside of an object called "response"
         .then(function (response) {
 
-            // Log the queryURL
-            // console.log(queryURL);
-
-            // Log the resulting object
-            // console.log(response);
-
-
-
-
-
-
-
-
-
-
 
             var weather = response.weather;
 
@@ -91,24 +68,11 @@ function citySearch(city) {
                 var txtWeatherCond = weather[i].description
                 var iconWeather = " <img src=https://openweathermap.org/img/wn/" + weather[i].icon + ".png>"
 
-                // console.log("weather:", txtWeatherCond)
-
-                // https://openweathermap.org/img/wn/02n.png
-                // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
             };
 
-            // <div class="city">city</div>
-            // <div class="date">date</div>
-            // <div class="weather-cond">weather-cond</div>
-            // <div class="temp">temp</div>
-            // <div class="humidity">humidity</div>
-            // <div class="wind">wind</div>
-            // <div class="uvi">uvi</div>
 
             // Transfer content to HTML
             $(".city").html("<h4>" + response.name + " (" + currentDate + ")" + iconWeather + "</h4>");
-            // $(".date").text("Date: " + currentDate);
-            // $(".weather-cond").html("Weather Conditions: " + txtWeatherCond + " " + iconWeather);
             $(".wind").html("<strong>Wind Speed:</strong>  " + response.wind.speed);
             $(".humidity").html("<strong>Humidity:</strong> " + response.main.humidity);
             $(".temp").html("<strong>Temperature:</strong>  " + response.main.temp);
@@ -117,21 +81,11 @@ function citySearch(city) {
             var tempF = (response.main.temp - 273.15) * 1.80 + 32;
             $(".tempF").html("<strong>Temperature:<strong>  " + tempF);
 
-            // Log the data in the console as well
-            // console.log("Wind Speed: " + response.wind.speed);
-            // console.log("Humidity: " + response.main.humidity);
-            // console.log("Temperature: " + response.main.temp);
-
             var lon = response.coord.lon
             var lat = response.coord.lat
 
-            // console.log("lon:", lon)
-            // console.log("lat:", lat)
-
-
             var queryUVI = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon
 
-            // console.log(queryUVI)
             $.ajax({
                 url: queryUVI,
                 method: "GET"
@@ -139,8 +93,6 @@ function citySearch(city) {
 
                 .then(function (response2) {
 
-                    // Log the resulting object
-                    // console.log("UVI RESPONSE:", response2);
                     $(".uvi").html("<strong>UVI:</strong>  " + response2.value);
 
                 });
@@ -161,16 +113,9 @@ function citySearch(city) {
                     var forecast = response3.list;
                     var forecast2 = response3
 
-                    // console.log(response3)
-                    // Log the resulting object
-
-                    // console.log("FORECAST:", forecast);
-                    // console.log("FORECAST2:", forecast2);
 
                     $(".dayforecast").empty();
 
-                    // $(".uvi").text("UVI:" + response2.value);
-                    "2020-02-14 00:00:00"
                     var data = forecast;
                     var res = alasql('SELECT (day + min_time) dt_txt FROM (SELECT day, min(time) min_time FROM (SELECT SUBSTRING(dt_txt,1,10) day,SUBSTRING(dt_txt,11,length(dt_txt)) time  FROM ?) X '
                         + 'GROUP BY  day) Y ', [data]);
@@ -178,18 +123,13 @@ function citySearch(city) {
                     var res1 = alasql('SELECT data.* \
                         FROM ? res JOIN ? data USING dt_txt', [res, data]);
 
-                    // document.getElementById("res").textContent = JSON.stringify(res);
 
                     for (var i = 0; i < res1.length; i++) {
 
 
-                        // var txtWeatherCond = forecast[i].weather[0].main;
-
-
-                        // var iconLink = " <img src=https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>"
                         var txtNum = ".forecast-" + i
                         var forecastArea = $(document).find(txtNum);
-                        // forecastArea.attr("class", "dayforecast")
+
                         var div = $("<div>");
                         var img = $("<img>");
                         var divtemp = $("<div>");
@@ -198,36 +138,17 @@ function citySearch(city) {
                         var txtDate = res1[i].dt_txt;
 
                         img.attr("src", "https://openweathermap.org/img/wn/" + res1[i].weather[0].icon + ".png")
-                        // console.log("https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>");
-                        // debugger;
-                        //(0K − 273.15) × 9/5 + 32 
+
+
                         divtemp.text("Temp: " + parseInt((res1[i].main.temp - 273.15) * (9 / 5) + 32) + "F");
 
                         divhumidity.text("Humidity: " + res1[i].main.humidity);
-                        // console.log(forecast[i].main.humidity)
 
-                        // debugger;
-                        // console.log(txtWeatherCond)
-                        // var iconWeather = " <img src=https://openweathermap.org/img/wn/" + weather[i].icon + ".png>"
-                        // debugger;
-                        // console.log("forecast weather:", txtWeatherCond, txtDate.substring(0, 10), txtNum);
 
-                        // console.log(txtDate.substr(0, 10))
-                        // console.log(txtDate.substr(5, 2))
-                        // console.log(txtDate.substr(8, 2))
-
-                        // console.log(txtDate.substr(0, 4))
-
-                        // $(txtNum).text();
                         div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(0, 4));
 
                         forecastArea.append(div, img, divtemp, divhumidity, divspace);
                         $("#forecast_area").removeAttr("hidden")
-
-
-
-                        // https://openweathermap.org/img/wn/02n.png
-                        // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
 
 
 
@@ -239,10 +160,7 @@ function citySearch(city) {
 
         })
 
-        .catch((e) =>
-
-        //  response = e.fail.responseText
-        {
+        .catch((e) => {
 
 
             alert(`The unknown error has occurred: ${e.responseText}`);
@@ -254,20 +172,14 @@ function citySearch(city) {
             // alert("")
         );
 
-
-    // api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={your api key}
-
 };
 
 
-
+//Saves the city text to the
 function saveCity(city) {
 
     debugger;
     event.preventDefault();
-
-
-
 
     var cityText = {
         city: city
@@ -278,20 +190,19 @@ function saveCity(city) {
     if (cityText === "") {
         return;
     }
-    // localStorage.setItem('city', cityText);
-    debugger;
+
     cities.push(cityText);
-    debugger;
+
+
+    //Empty the list so it can be repopulated.
     $("#prior-search-list").empty();
+
     // Render a new li for each high score stored locally
     for (var i = 0; i < cities.length; i++) {
 
 
-        // console.log("cities array:", cities[i].city)
-
         var c = cities[i].city;
 
-        // console.log(c)
 
         var li = $("<li>");
         li.attr('class', 'li_item')
@@ -301,13 +212,6 @@ function saveCity(city) {
         cityList.append(li);
 
     };
-    // // Add new highscore to initials array, clear the input
-    // highscore.push(initialsText);
-    // initialsInput.value = "";
-    // highscore.hidden = "";
-    // // Store updated initials in localStorage, re-render the list
-    // storeHighScore();
-    // renderHighScore();
 
 };
 
