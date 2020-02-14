@@ -25,4 +25,10 @@ body
   padding: 5px;
   border: solid 1px black;
   color: white;
+  font-size: 0.6em;
+}
+
+#city-form{
+
+  font-size: 0.875em;
 }

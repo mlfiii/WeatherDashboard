@@ -28,6 +28,7 @@ $("#find-city").on("click", function (event) {
     console.log(city)
     citySearch(city);
 
+
 })
 
 $("#prior-search-list").on("click", '.li_item', function () {
@@ -220,6 +221,7 @@ function citySearch(city) {
                         div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(0, 4));
                         debugger;
                         forecastArea.append(div, img, divtemp, divhumidity, divspace);
+                        $("#forecast_area").removeAttr("hidden")
 
                         debugger;
 
@@ -236,7 +238,20 @@ function citySearch(city) {
 
         })
 
-        .catch((e) => console.log('Exception: ', e));
+        .catch((e) =>
+
+        //  response = e.fail.responseText
+        {
+
+
+            alert(`The unknown error has occurred: ${e.responseText}`);
+            return;
+        }
+
+
+
+            // alert("")
+        );
 
 
     // api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={your api key}
