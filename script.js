@@ -25,7 +25,7 @@ $("#find-city").on("click", function (event) {
     var city = $("#city-input").val();
 
     saveCity(city);
-    console.log(city)
+    // console.log(city)
     citySearch(city);
 
 
@@ -39,7 +39,7 @@ $("#prior-search-list").on("click", '.li_item', function () {
 
     citySearch(city);
     // debugger;
-    console.log(city)
+    // console.log(city)
     // if (viewHighScores === false) {
     //     highScoreArea.removeAttribute("hidden");
     //     viewHighScores = true;
@@ -69,10 +69,10 @@ function citySearch(city) {
         .then(function (response) {
 
             // Log the queryURL
-            console.log(queryURL);
+            // console.log(queryURL);
 
             // Log the resulting object
-            console.log(response);
+            // console.log(response);
 
 
 
@@ -91,7 +91,7 @@ function citySearch(city) {
                 var txtWeatherCond = weather[i].description
                 var iconWeather = " <img src=https://openweathermap.org/img/wn/" + weather[i].icon + ".png>"
 
-                console.log("weather:", txtWeatherCond)
+                // console.log("weather:", txtWeatherCond)
 
                 // https://openweathermap.org/img/wn/02n.png
                 // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
@@ -118,20 +118,20 @@ function citySearch(city) {
             $(".tempF").text("Temperature: " + tempF);
 
             // Log the data in the console as well
-            console.log("Wind Speed: " + response.wind.speed);
-            console.log("Humidity: " + response.main.humidity);
-            console.log("Temperature: " + response.main.temp);
+            // console.log("Wind Speed: " + response.wind.speed);
+            // console.log("Humidity: " + response.main.humidity);
+            // console.log("Temperature: " + response.main.temp);
 
             var lon = response.coord.lon
             var lat = response.coord.lat
 
-            console.log("lon:", lon)
-            console.log("lat:", lat)
+            // console.log("lon:", lon)
+            // console.log("lat:", lat)
 
 
             var queryUVI = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon
 
-            console.log(queryUVI)
+            // console.log(queryUVI)
             $.ajax({
                 url: queryUVI,
                 method: "GET"
@@ -140,7 +140,7 @@ function citySearch(city) {
                 .then(function (response2) {
 
                     // Log the resulting object
-                    console.log("UVI RESPONSE:", response2);
+                    // console.log("UVI RESPONSE:", response2);
                     $(".uvi").text("UVI:" + response2.value);
 
                 });
@@ -151,6 +151,7 @@ function citySearch(city) {
 
             var queryForecast = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey + "&cnt=40"
             $.ajax({
+
                 url: queryForecast,
                 method: "GET"
             })
@@ -163,8 +164,8 @@ function citySearch(city) {
                     // console.log(response3)
                     // Log the resulting object
 
-                    console.log("FORECAST:", forecast);
-                    console.log("FORECAST2:", forecast2);
+                    // console.log("FORECAST:", forecast);
+                    // console.log("FORECAST2:", forecast2);
 
                     $(".dayforecast").empty();
 
@@ -183,7 +184,7 @@ function citySearch(city) {
 
 
                         // var txtWeatherCond = forecast[i].weather[0].main;
-                        debugger;
+
 
                         // var iconLink = " <img src=https://openweathermap.org/img/wn/" + forecast[i].weather[0].icon + ".png>"
                         var txtNum = ".forecast-" + i
@@ -201,7 +202,7 @@ function citySearch(city) {
                         // debugger;
                         //(0K − 273.15) × 9/5 + 32 
                         divtemp.text("Temp: " + parseInt((res1[i].main.temp - 273.15) * (9 / 5) + 32) + "F");
-                        debugger;
+
                         divhumidity.text("Humidity: " + res1[i].main.humidity);
                         // console.log(forecast[i].main.humidity)
 
@@ -211,19 +212,19 @@ function citySearch(city) {
                         // debugger;
                         // console.log("forecast weather:", txtWeatherCond, txtDate.substring(0, 10), txtNum);
 
-                        console.log(txtDate.substr(0, 10))
-                        console.log(txtDate.substr(5, 2))
-                        console.log(txtDate.substr(8, 2))
+                        // console.log(txtDate.substr(0, 10))
+                        // console.log(txtDate.substr(5, 2))
+                        // console.log(txtDate.substr(8, 2))
 
-                        console.log(txtDate.substr(0, 4))
+                        // console.log(txtDate.substr(0, 4))
 
                         // $(txtNum).text();
                         div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(0, 4));
-                        debugger;
+
                         forecastArea.append(div, img, divtemp, divhumidity, divspace);
                         $("#forecast_area").removeAttr("hidden")
 
-                        debugger;
+
 
                         // https://openweathermap.org/img/wn/02n.png
                         // <img style="-webkit-user-select: none;max-width: 100%;margin: auto;" src="https://openweathermap.org/img/wn/02n.png">
@@ -262,7 +263,8 @@ function citySearch(city) {
 
 function saveCity(city) {
 
-    event.preventDefault()
+    debugger;
+    event.preventDefault();
 
 
 
@@ -277,8 +279,10 @@ function saveCity(city) {
         return;
     }
     // localStorage.setItem('city', cityText);
+    debugger;
     cities.push(cityText);
-
+    debugger;
+    $("#prior-search-list").empty();
     // Render a new li for each high score stored locally
     for (var i = 0; i < cities.length; i++) {
 
