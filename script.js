@@ -4,14 +4,18 @@ var currentDateString = moment().format('MMDDYYYY');
 var cities = [];
 var cityList = $("#prior-search-list");
 
-// Get stored highscores from localStorage
-// Parsing the JSON string to an object
+
 var storedCities = JSON.parse(localStorage.getItem("cities"));
+var currentCity = window.localStorage.getItem('last_city')
+
+
 
 // If highscores were retrieved from localStorage, update the highscores array to it
 if (storedCities !== null) {
     cities = storedCities;
 }
+
+citySearch(currentCity);
 
 $("#find-city").on("click", function (event) {
 
@@ -184,7 +188,9 @@ function saveCity(city) {
     var cityText = {
         city: city
     };
-    // console.log("city text:", cityText)
+
+    window.localStorage.setItem('last_city', city);
+
 
     // Return from function early if submitted initials is blank
     if (cityText === "") {
