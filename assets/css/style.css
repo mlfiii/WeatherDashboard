@@ -60,3 +60,12 @@ label{
   margin: 0px 0px 0px 10px;
 }
 
+#city-input{
+
+  border: solid 1px black;
+}
+
+#search-area{
+
+  margin-top: 10px;
+}
