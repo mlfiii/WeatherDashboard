@@ -48,6 +48,11 @@ $("#prior-search-list").on("click", '.li_item', function () {
 //Used to search for a city
 function citySearch(city) {
 
+    // Return from function early if submitted initials is blank
+    if (city === "") {
+        return;
+    }
+
     // This is our API key
     var APIKey = "4cc21abac77ff1659707203c7c342f15";
 
@@ -167,7 +172,7 @@ function citySearch(city) {
         .catch((e) => {
 
             // Return from function early if submitted initials is blank
-            if (cityText === "") {
+            if (city === "") {
                 return;
             }
 
