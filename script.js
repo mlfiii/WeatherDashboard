@@ -1,21 +1,31 @@
 var currentDate = moment().format('MM/DD/YYYY');
+
 var currentDateArea = $(document).find(".date");
 var currentDateString = moment().format('MMDDYYYY');
 var cities = [];
 var cityList = $("#prior-search-list");
 
 
-var storedCities = JSON.parse(localStorage.getItem("cities"));
+//var storedCities = JSON.parse(localStorage.getItem("testcity"));
 var currentCity = window.localStorage.getItem('last_city')
 
 
+//
+existingEntries = JSON.parse(localStorage.getItem("citylist"));
+
+var testCities = []
+
 
 // If highscores were retrieved from localStorage, update the highscores array to it
-if (storedCities !== null) {
-    cities = storedCities;
+if (localStorage.getItem("testcity") === null) {
+    localStorage.setItem("testcity", JSON.stringify(cities));
+    // return ;
 }
 
+renderCityList();
+
 citySearch(currentCity);
+
 
 $("#find-city").on("click", function (event) {
 
@@ -24,6 +34,8 @@ $("#find-city").on("click", function (event) {
 
     // Here we grab the text from the input box
     var city = $("#city-input").val();
+
+    if (city === null) { city = ""; }
 
     //Save the city text to list 
     saveCity(city);
@@ -129,10 +141,11 @@ function citySearch(city) {
                     var res = alasql('SELECT (day + min_time) dt_txt FROM (SELECT day, min(time) min_time FROM (SELECT SUBSTRING(dt_txt,1,10) day,SUBSTRING(dt_txt,11,length(dt_txt)) time  FROM ?) X '
                         + 'GROUP BY  day) Y ', [data]);
 
-                    var res1 = alasql('SELECT data.* \
-                        FROM ? res JOIN ? data USING dt_txt', [res, data]);
+                    var res1 = alasql('SELECT (SUBSTRING(res.dt_txt,6,2) + "/" +  SUBSTRING(res.dt_txt,9,2) +"/" + SUBSTRING(res.dt_txt,1,4)),data.* \
+                        FROM ? res JOIN ? data USING dt_txt WHERE (SUBSTRING(res.dt_txt,6,2) + "/" +  SUBSTRING(res.dt_txt,9,2) +"/" + SUBSTRING(res.dt_txt,1,4))<> SUBSTRING("'+ currentDate + '",1,10)', [res, data]);
 
 
+                    //(SUBSTRING(res.dt_txt,6,2) + "/" +  SUBSTRING(res.dt_txt,9,2) +"/" + SUBSTRING(res.dt_txt,1,4))
                     for (var i = 0; i < res1.length; i++) {
 
 
@@ -154,7 +167,7 @@ function citySearch(city) {
                         divhumidity.text("Humidity: " + res1[i].main.humidity);
 
 
-                        div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(0, 4));
+                        div.text(txtDate.substr(5, 2) + "/" + txtDate.substr(8, 2) + "/" + txtDate.substr(2, 2));
 
                         forecastArea.append(div, img, divtemp, divhumidity, divspace);
                         $("#forecast_area").removeAttr("hidden")
@@ -172,7 +185,7 @@ function citySearch(city) {
         .catch((e) => {
 
             // Return from function early if submitted initials is blank
-            if (city === "") {
+            if (city === "" || city === null) {
                 return;
             }
 
@@ -192,6 +205,7 @@ function citySearch(city) {
 //Saves the city text to the
 function saveCity(city) {
 
+    refreshCityList(city);
     event.preventDefault();
 
     var cityText = {
@@ -199,6 +213,14 @@ function saveCity(city) {
     };
 
     window.localStorage.setItem('last_city', city);
+
+
+    // window.localStorage.setItem(cityText)
+
+    existingEntries = JSON.parse(window.localStorage.getItem('citylist'))
+
+    window.localStorage.setItem("citylist", JSON.stringify(cityText));
+
 
 
     // Return from function early if submitted initials is blank
@@ -209,14 +231,58 @@ function saveCity(city) {
     cities.push(cityText);
 
 
-    //Empty the list so it can be repopulated.
+
+
+};
+
+
+function refreshCityList(city) {
+
+
+
+    // var newCity = $("#city-input").val();;
     $("#prior-search-list").empty();
+    var testCities = JSON.parse(localStorage.getItem("testcity"));
+
+    testCities.splice(0, 0, city);
+
+    localStorage.setItem("testcity", JSON.stringify(testCities));
+    testCities = JSON.parse(localStorage.getItem("testcity"));
+
+
 
     // Render a new li for each high score stored locally
-    for (var i = 0; i < cities.length; i++) {
+    for (var i = 0; i < testCities.length; i++) {
 
 
-        var c = cities[i].city;
+        var c = testCities[i];
+
+        var li = $("<li>");
+        li.attr('class', 'li_item')
+        li.text(c);
+        li.attr("data-city", c);
+
+        cityList.append(li);
+
+    };
+
+
+
+};
+
+
+
+function renderCityList() {
+    $("#prior-search-list").empty();
+    var renderCity = JSON.parse(localStorage.getItem("testcity"));
+
+    if (renderCity === null || renderCityList === "") { return; }
+
+    // Render a new li for each high score stored locally
+    for (var i = 0; i < renderCity.length; i++) {
+
+
+        var c = renderCity[i];
 
 
         var li = $("<li>");
@@ -228,6 +294,4 @@ function saveCity(city) {
 
     };
 
-};
-
-
+}
