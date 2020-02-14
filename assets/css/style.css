@@ -36,7 +36,7 @@ body
 #prior-search-area{
 
 border: 1px solid blue;
-margin: 5px;
+margin: 0px 25px 0px 25px;
 
 }
 
@@ -44,3 +44,19 @@ hr{
 
   color: black;
 }
+
+label{
+
+  margin: 0px 10px 0px 10px;
+}
+
+.h3{
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+#five-day{
+
+  margin: 0px 0px 0px 10px;
+}
+

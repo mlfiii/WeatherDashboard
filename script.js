@@ -109,13 +109,13 @@ function citySearch(city) {
             $(".city").html("<h4>" + response.name + " (" + currentDate + ")" + iconWeather + "</h4>");
             // $(".date").text("Date: " + currentDate);
             // $(".weather-cond").html("Weather Conditions: " + txtWeatherCond + " " + iconWeather);
-            $(".wind").text("Wind Speed: " + response.wind.speed);
-            $(".humidity").text("Humidity: " + response.main.humidity);
-            $(".temp").text("Temperature:" + response.main.temp);
+            $(".wind").html("<strong>Wind Speed:</strong>  " + response.wind.speed);
+            $(".humidity").html("<strong>Humidity:</strong> " + response.main.humidity);
+            $(".temp").html("<strong>Temperature:</strong>  " + response.main.temp);
 
             // Converts the temp to Kelvin with the below formula
             var tempF = (response.main.temp - 273.15) * 1.80 + 32;
-            $(".tempF").text("Temperature: " + tempF);
+            $(".tempF").html("<strong>Temperature:<strong>  " + tempF);
 
             // Log the data in the console as well
             // console.log("Wind Speed: " + response.wind.speed);
@@ -141,7 +141,7 @@ function citySearch(city) {
 
                     // Log the resulting object
                     // console.log("UVI RESPONSE:", response2);
-                    $(".uvi").text("UVI:" + response2.value);
+                    $(".uvi").html("<strong>UVI:</strong>  " + response2.value);
 
                 });
 
