@@ -32,3 +32,14 @@ body
 
   font-size: 0.875em;
 }
+
+#prior-search-area{
+
+border: 1px solid blue;
+
+}
+
+hr{
+
+  color: black;
+}
